@@ -28,9 +28,9 @@ def atdc(dac, comp, t):
         dig[i] = 1
         dtacout(dac, dig, t)
         if GPIO.input(comp):
-            dig[i] = 1
-        else:
             dig[i] = 0
+        else:
+            dig[i] = 1
     return dig
         
     
