@@ -72,8 +72,9 @@ try:
             print('Do you want to convert analog signal to digital? Type y for yes and  for n')
         inputS = input()
         if inputS == 'y':
+            check = 1
             digital = atdc(dac, comp, t)
-            print('digital signal', ' '.join(digital))
+            print('digital signal', ' '.join(map(str, digital)))
             print('decimal', bintodec(digital))
             volt = ( bintodec(digital) / raz ) * mV
             print('approximate voltage', volt)
