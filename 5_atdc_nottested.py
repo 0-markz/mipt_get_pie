@@ -25,11 +25,12 @@ def dtacout(dac, sig,ti):
 def atdc(dac, comp, t):
     dig = [ 0 for _ in dac ]
     for i in range(len(dac)):
-        temp = dig
-        temp[i] = 1
+        dig[i] = 1
         dtacout(dac, dig, t)
         if GPIO.input(comp):
-            dig = temp
+            dig[i] = 1
+        else:
+            dig[i] = 0
     return dig
         
     
