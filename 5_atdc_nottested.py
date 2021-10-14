@@ -16,7 +16,9 @@ def dectodtac(v,r,dac):
     GPIO.output(dac, sig)
     time.sleep(0.1)
     return sig
-
+def dectoleds(sig, leds):
+    GPIO.output(leds, sig)
+    time.sleep(0.1)
 def dtacout(dac, sig,ti):
     GPIO.output(dac, sig)
     time.sleep(ti)
@@ -31,6 +33,7 @@ def atdc(dac, comp, t):
             dig[i] = 0
         else:
             dig[i] = 1
+    GPIO.output(dac, GPIO.LOW)
     return dig
         
     
@@ -69,6 +72,7 @@ try:
     while 0==0:
         t = 0.05
         check = 0
+        
         if check == 0:
             print('Do you want to convert analog signal to digital? Type y for yes and  for n')
         inputS = input()
@@ -80,6 +84,8 @@ try:
             volt = ( bintodec(digital) / raz ) * mV
             print('approximate voltage', volt)
             print ('Type y or n')
+        if check ==1:
+            dectoleds(digital, leds)
         elif inputS == 'n':
             break
         else:
