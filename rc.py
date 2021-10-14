@@ -91,6 +91,8 @@ def main(iterations):
     mV = 3.3
     bits = len(dac)
     maxdec = 2**bits
+    
+    
     for i in range(iterations):
         print('Starting supply to the capacitor.')
         check = 0
@@ -112,6 +114,8 @@ def main(iterations):
             values.append(value)
             times.append(start_time)
             voltages.append(voltage)
+        maxval = value
+        charge_time = current_time
         print('The capacitor will discharge now.')
         GPIO.output(trModV, 0)
         while check == 1:
@@ -126,10 +130,26 @@ def main(iterations):
             values.append(value)
             voltages.append(voltage)
             times.append(start_time)
+        discharge_time = current_time
+        minval = value
         print('Iteration done.')
+        print('Discharge time: '+discharge_time)
+        print('Charge time: '+ charge_time)
+        print('Total time: ' + (charge_time + discharge_time))
+        print('Max voltage, supplied to pin 17' + mV)
+        print('Max voltage that was read from the capacitor: decimal ' + maxval + ' volt ' + ((maxval/maxdec)*mV))
+        print('Min voltage that was read from the capacitor: decimal ' + minval + ' volt ' + ((minval/maxdec)*mV))
+        
         df = pd.DataFrame({'Time': times, 'Voltagedecimal': values, 'Voltage':voltages})
-        path='values_'+current_iteration+'.csv'
+        
+        path='values_'+i+'.csv'
         df.to_csv(path,index=False)
+        
+        dfset = pd.DataFrame({'Charge':charge_time, 'Discharge':discharge_time, 'Stepvolt' : ((1/maxdec)*mV),'Maxvoltdec':maxval, 'Minvoltdec':minval, 'Maxvolt': ((maxval/maxdec)*mV), 'Minvolt': ((minval/maxdec)*mV), 'T': t})
+        
+        pathset = 'settings_'+i+'.csv'
+        dfset.to_csv(pathset, index=False)
+        
         visualization(df)
         GPIO.ouput(trModV, GPIO.LOW)
         GPIO.output(dac, GPIO.LOW)
