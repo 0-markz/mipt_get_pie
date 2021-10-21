@@ -120,7 +120,7 @@ def main(iterations):
             values.append(value)
             voltages.append(voltage)
             times.append(start_time)
-        discharge_time = current_time
+        discharge_time = current_time - charge_time
         minval = value
         print('Iteration done.')
         print('Discharge time: ', discharge_time)
